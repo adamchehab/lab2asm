@@ -11,75 +11,40 @@ section '.data' data readable writable
 
     resStr db 'Result: %d', 0
 
-    spaceStr db ' %d', 0
-
-    A dd ?
-    C dd ?
-    D dd ?
+    a dd 1
+    c dd 2
+    d dd 3
+    res dd ?
 
 
 section '.code' code readable executable
 
     Start:
-        ; invite to enter A
-        push strA
-        call [printf]
+        ; (2c + d – 52) / (a/4 + 1)
 
-        ; read input to A
-        push A
-        push spaceStr
-        call [scanf]
-
-        ; invite to enter C
-        push strC
-        call [printf]
-
-        ; read input to C
-        push C
-        push spaceStr
-        call [scanf]
-
-        ; invite to enter D
-        push strD
-        call [printf]
-
-        ; read input to D
-        push D
-        push spaceStr
-        call [scanf]
-
-        ;y=(2*c-d+23)/(a/4-1)
-
-        ;ebx=(2*c-d+23)
-        mov eax,[e]
+        ; (2c + d – 52)
+        mov eax, [c]
         mov ebx, 2
         imul ebx
-        sub eax, [d]
-        add eax, 23
+        add eax, [d]
+        sub eax, 52
+
+        ; move eax to ebx
         mov ebx, eax
 
-        ;ecx=(a/4-1)
-        mov eax,[a]
-        cdq
-        mov ecx, 4
-        idiv ecx
-        sub eax, 1
-        mov ecx, eax
+        ; move ebx to res
+        mov [res], ebx
 
-        ;eax=(2*c-d+23)/(a/4-1)
-        mov eax, ebx
-        idiv ecx
-        
-        ;y=(2*c-d+23)/(a/4-1)
-        mov [y], eax
+        ; output result
+        push [res]
+        push resStr
+        call [printf]
 
 
-        jmp finish
+        ; prevent window from closing
+        call [getch]                
 
-    finish:
-
-        call [getch]                    ; чтобы окно не закрылось
-
+        ; leave programm
         push 0
         call [ExitProcess]
 
