@@ -4,20 +4,25 @@ entry Start
 
 include 'C:\fasmw17327\INCLUDE\win32a.inc'
 
+
 ; section for initialising variables
 section '.data' data readable writable
-    strA db 'Enter A: ', 0
-    strC db 'Enter C: ', 0
-    strD db 'Enter D: ', 0
 
-    resStr db 'Result: %d', 0
+        ; strings to invite user to input
+        strA db 'Enter A: ', 0
+        strC db 'Enter C: ', 0
+        strD db 'Enter D: ', 0
 
-    spaceStr db ' %d', 0
+        ; string to output result
+        resStr db 'Result: %d', 0
 
-    a dd ?
-    c dd ?
-    d dd ?
-    res dd ?
+        ; string with space
+        spaceStr db ' %d', 0
+        
+        ; input numbers
+        a dd ?
+        c dd ?
+        d dd ?
 
 
 ; section for code
@@ -60,7 +65,7 @@ section '.code' code readable executable
         add eax, [d]
         sub eax, 52
         mov ebx, eax
-        ; (now in EBX)
+        ; (result is in EBX)
 
         ;ecx=(a/4-1)
         mov eax, [a]
@@ -69,38 +74,36 @@ section '.code' code readable executable
         idiv ecx
         add eax, 1
         mov ecx, eax
-        ; (now in ECX)
+        ; (result is in ECX)
 
         ;eax=(2*c-d+23)/(a/4-1)
         mov eax, ebx
         cdq
         idiv ecx
-        ; (now in EAX)
-
-        ; move eax to res
-        mov [res], eax
+        ; (result is in EAX)
 
         ; output result
-        push [res]
+        push eax
         push resStr
         call [printf]
 
-        ; prevent window from closing
+        ; prevent console from closing
         call [getch]                
 
         ; leave programm
         push 0
         call [ExitProcess]
 
+
 ; section for libraries
 section '.idata' import data readable
-    library kernel, 'kernel32.dll',\
-            msvcrt, 'msvcrt.dll'
+        library kernel, 'kernel32.dll',\
+                msvcrt, 'msvcrt.dll'
         
-    import  kernel,\
-            ExitProcess, 'ExitProcess'
+        import  kernel,\
+                ExitProcess, 'ExitProcess'
 
-    import  msvcrt,\
-            printf, 'printf',\
-            scanf, 'scanf',\
-            getch, '_getch'
+        import  msvcrt,\
+                printf, 'printf',\
+                scanf, 'scanf',\
+                getch, '_getch'
