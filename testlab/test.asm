@@ -1,5 +1,8 @@
+; programm - eqation solver: (2c + d – 52) / (a/4 + 1)
+
 format PE console
 
+; tell programm where is entery poin
 entry Start
 
 include 'C:\fasmw17327\INCLUDE\win32a.inc'
