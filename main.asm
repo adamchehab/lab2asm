@@ -11,31 +11,32 @@ include 'C:\fasmw17327\INCLUDE\win32a.inc'
 ; section for initialising variables
 section '.data' data readable writable
 
-        ; strings to invite user to input
-        strA db 'Enter A: ', 0
-        strC db 'Enter C: ', 0
-        strD db 'Enter D: ', 0
+	; strings to invite user to input
+	strA db 'Enter A: ', 0
+	strC db 'Enter C: ', 0
+	strD db 'Enter D: ', 0
 
-        ; string to output result
-        resStr db 'Result: %d', 0
+	; string to output result
+	resStr db 'Result: %d', 0
 
-        ; string with space
-        spaceStr db ' %d', 0
-        
-        ; input numbers
-        a dd ?
-        c dd ?
-        d dd ?
+	; string with space
+	spaceStr db ' %d', 0
+	
+	; input numbers
+	a dd ?
+	c dd ?
+	d dd ?
 
-        ; variable to store info: if = 1 then mod if = 0 then div
-        b dd ? 
+	; variable to store info: if = 1 then mod if = 0 then div
+	b dd ? 
 
 
 ; section for code
 section '.code' code readable executable
 
     Start:
-; INPUT SECTION
+
+	; INPUT SECTION
         
          ; invite to enter A
         push strA
@@ -64,7 +65,8 @@ section '.code' code readable executable
         push spaceStr
         call [scanf]
 
-; CHECK IF A IS ODD
+	; CHECK IF A IS ODD
+
         mov eax, [a]
         cdq
         mov ecx, 2
@@ -72,7 +74,7 @@ section '.code' code readable executable
         mov [b], edx
 
 
-; SOLVE EQUATION
+	; SOLVE EQUATION
 
         ; (2c + d – 52) / (a/4 + 1)
 
@@ -90,10 +92,12 @@ section '.code' code readable executable
         cdq
         mov ecx, 4
         idiv ecx
+
         ; MOD OR DIV - we enter this code if a is not odd
         cmp [b], 0
         jne isOdd
                 mov eax, edx
+		
         isOdd:
         add eax, 1
         mov ecx, eax
@@ -103,21 +107,21 @@ section '.code' code readable executable
         mov eax, ebx
         cdq
         idiv ecx
+
         ; MOD OR DIV - we enter this code if a is not odd
         cmp [b], 0
         jne isOdd1
                 mov eax, edx
+		
         isOdd1:
-
-
         ; (result is in EAX)
 
-; OUTPUT RESULT
+	; OUTPUT RESULT
         push eax
         push resStr
         call [printf]
 
-; LEAVE PROGRAMM
+	; LEAVE PROGRAMM
 
         ; prevent console from closing
         call [getch]                

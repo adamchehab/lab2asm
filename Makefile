@@ -1,5 +1,5 @@
 all: clean
-	fasm lab2.asm
+	@fasm main.asm
 
 clean: 
-	rm -f lab2.exe
+	@rm -f main.exe
