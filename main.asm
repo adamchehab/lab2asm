@@ -28,7 +28,7 @@ section '.data' data readable writable
 	d dd ?
 
 	; variable to store if a is odd or not: if = 1 then odd if = 0 then notOdd
-	b dd ? 
+	odd dd ? 
 
 
 ; section for code
@@ -71,7 +71,7 @@ section '.code' code readable executable
         cdq
         mov ecx, 2
         idiv ecx
-        mov [b], edx
+        mov [odd], edx
 
 
 	; SOLVE EQUATION
@@ -94,7 +94,7 @@ section '.code' code readable executable
         idiv ecx
 
         ; MOD OR DIV - we enter this code if a is not odd
-        cmp [b], 0
+        cmp [odd], 0
         jne isOdd
         	mov eax, edx
 		
@@ -109,7 +109,7 @@ section '.code' code readable executable
         idiv ecx
 
         ; MOD OR DIV - we enter this code if a is not odd
-        cmp [b], 0
+        cmp [odd], 0
         jne isOdd1
         	mov eax, edx
 		
