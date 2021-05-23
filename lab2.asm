@@ -2,7 +2,7 @@
 
 format PE console
 
-; tell programm where is entery poin
+; tell programm where is entery point
 entry Start
 
 include 'C:\fasmw17327\INCLUDE\win32a.inc'
@@ -27,11 +27,16 @@ section '.data' data readable writable
         c dd ?
         d dd ?
 
+        ; variable to store info: if = 1 then mod if = 0 then div
+        b dd ? 
+
 
 ; section for code
 section '.code' code readable executable
 
     Start:
+; INPUT SECTION
+        
          ; invite to enter A
         push strA
         call [printf]
@@ -59,6 +64,16 @@ section '.code' code readable executable
         push spaceStr
         call [scanf]
 
+; CHECK IF A IS ODD
+        mov eax, [a]
+        cdq
+        mov ecx, 2
+        idiv ecx
+        mov [b], edx
+
+
+; SOLVE EQUATION
+
         ; (2c + d – 52) / (a/4 + 1)
 
         ; (2c + d – 52)
@@ -75,6 +90,11 @@ section '.code' code readable executable
         cdq
         mov ecx, 4
         idiv ecx
+        ; MOD OR DIV - we enter this code if a is not odd
+        cmp [b], 0
+        jne isOdd
+                mov eax, edx
+        isOdd:
         add eax, 1
         mov ecx, eax
         ; (result is in ECX)
@@ -83,12 +103,21 @@ section '.code' code readable executable
         mov eax, ebx
         cdq
         idiv ecx
+        ; MOD OR DIV - we enter this code if a is not odd
+        cmp [b], 0
+        jne isOdd1
+                mov eax, edx
+        isOdd1:
+
+
         ; (result is in EAX)
 
-        ; output result
+; OUTPUT RESULT
         push eax
         push resStr
         call [printf]
+
+; LEAVE PROGRAMM
 
         ; prevent console from closing
         call [getch]                
