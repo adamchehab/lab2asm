@@ -4,6 +4,7 @@ entry Start
 
 include 'C:\fasmw17327\INCLUDE\win32a.inc'
 
+; section for initialising variables
 section '.data' data readable writable
     strA db 'Enter A: ', 0
     strC db 'Enter C: ', 0
@@ -11,12 +12,13 @@ section '.data' data readable writable
 
     resStr db 'Result: %d', 0
 
-    a dd 1
-    c dd 2
-    d dd 3
+    a dd 12
+    c dd 20
+    d dd 20
     res dd ?
 
 
+; section for code
 section '.code' code readable executable
 
     Start:
@@ -28,18 +30,30 @@ section '.code' code readable executable
         imul ebx
         add eax, [d]
         sub eax, 52
-
-        ; move eax to ebx
         mov ebx, eax
+        ; (now in EBX)
 
-        ; move ebx to res
-        mov [res], ebx
+        ;ecx=(a/4-1)
+        mov eax, [a]
+        cdq
+        mov ecx, 4
+        idiv ecx
+        sub eax, 1
+        mov ecx, eax
+        ; (now in ECX)
+
+        ;eax=(2*c-d+23)/(a/4-1)
+        mov eax, ebx
+        idiv ecx
+        ; (now in EAX)
+
+        ; move eax to res
+        mov [res], eax
 
         ; output result
         push [res]
         push resStr
         call [printf]
-
 
         ; prevent window from closing
         call [getch]                
@@ -48,6 +62,7 @@ section '.code' code readable executable
         push 0
         call [ExitProcess]
 
+; section for libraries
 section '.idata' import data readable
     library kernel, 'kernel32.dll',\
             msvcrt, 'msvcrt.dll'
