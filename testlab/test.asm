@@ -12,9 +12,11 @@ section '.data' data readable writable
 
     resStr db 'Result: %d', 0
 
-    a dd 12
-    c dd 20
-    d dd 4
+    spaceStr db ' %d', 0
+
+    a dd ?
+    c dd ?
+    d dd ?
     res dd ?
 
 
@@ -22,6 +24,33 @@ section '.data' data readable writable
 section '.code' code readable executable
 
     Start:
+         ; invite to enter A
+        push strA
+        call [printf]
+
+        ; read input to A
+        push a
+        push spaceStr
+        call [scanf]
+
+        ; invite to enter C
+        push strC
+        call [printf]
+
+        ; read input to C
+        push c
+        push spaceStr
+        call [scanf]
+
+        ; invite to enter D
+        push strD
+        call [printf]
+
+        ; read input to D
+        push d
+        push spaceStr
+        call [scanf]
+
         ; (2c + d – 52) / (a/4 + 1)
 
         ; (2c + d – 52)
