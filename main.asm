@@ -27,7 +27,7 @@ section '.data' data readable writable
 	c dd ?
 	d dd ?
 
-	; variable to store info: if = 1 then mod if = 0 then div
+	; variable to store if a is odd or not: if = 1 then odd if = 0 then notOdd
 	b dd ? 
 
 
@@ -38,7 +38,7 @@ section '.code' code readable executable
 
 	; INPUT SECTION
         
-         ; invite to enter A
+        ; invite to enter A
         push strA
         call [printf]
 
@@ -96,7 +96,7 @@ section '.code' code readable executable
         ; MOD OR DIV - we enter this code if a is not odd
         cmp [b], 0
         jne isOdd
-                mov eax, edx
+        	mov eax, edx
 		
         isOdd:
         add eax, 1
@@ -111,7 +111,7 @@ section '.code' code readable executable
         ; MOD OR DIV - we enter this code if a is not odd
         cmp [b], 0
         jne isOdd1
-                mov eax, edx
+        	mov eax, edx
 		
         isOdd1:
         ; (result is in EAX)
@@ -133,13 +133,13 @@ section '.code' code readable executable
 
 ; section for libraries
 section '.idata' import data readable
-        library kernel, 'kernel32.dll',\
-                msvcrt, 'msvcrt.dll'
-        
-        import  kernel,\
-                ExitProcess, 'ExitProcess'
+	library kernel, 'kernel32.dll',\
+			msvcrt, 'msvcrt.dll'
+	
+	import  kernel,\
+			ExitProcess, 'ExitProcess'
 
-        import  msvcrt,\
-                printf, 'printf',\
-                scanf, 'scanf',\
-                getch, '_getch'
+	import  msvcrt,\
+			printf, 'printf',\
+			scanf, 'scanf',\
+			getch, '_getch'
