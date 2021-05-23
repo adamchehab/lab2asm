@@ -14,7 +14,7 @@ section '.data' data readable writable
 
     a dd 12
     c dd 20
-    d dd 20
+    d dd 4
     res dd ?
 
 
@@ -38,12 +38,13 @@ section '.code' code readable executable
         cdq
         mov ecx, 4
         idiv ecx
-        sub eax, 1
+        add eax, 1
         mov ecx, eax
         ; (now in ECX)
 
         ;eax=(2*c-d+23)/(a/4-1)
         mov eax, ebx
+        cdq
         idiv ecx
         ; (now in EAX)
 
