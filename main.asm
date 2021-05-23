@@ -87,7 +87,7 @@ section '.code' code readable executable
         mov ebx, eax
         ; (result is in EBX)
 
-        ;ecx=(a/4-1)
+        ;ecx=(a/4 + 1)
         mov eax, [a]
         cdq
         mov ecx, 4
